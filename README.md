@@ -9,6 +9,19 @@ Get all Dynamics NAV service information in a server/computer
 
 ---
 
+## Usage
+Open the `Execute.ps1` as admin.
+
+Set the full path of the `Get-NavServicesBasicInfo.ps1` file.
+```powershell
+Import-Module 'C:\..\Get-NavServicesBasicInfo\Get-NavServicesBasicInfo.ps1'
+```
+
+Run
+```powershell
+GetNavServicesBasicInfo
+---
+
 ## Contribution
 
 Please read [CONTRIBUTING.md](https://github.com/ederlealsilva/Get-NavServicesBasicInfo) for details on our code of conduct, and the process for submitting pull requests to us.
