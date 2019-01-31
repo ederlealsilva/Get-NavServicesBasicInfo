@@ -3,7 +3,6 @@ Get all Dynamics NAV service information in a server/computer.
 
 This script can be helpful if you want to know which ports are being use in Dynamics NAV.
 
----
 
 ### Prerequisites
 * Powershell >= 2.0
