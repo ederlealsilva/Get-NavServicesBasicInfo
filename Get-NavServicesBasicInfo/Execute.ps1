@@ -9,6 +9,7 @@
  ** PR  Date	     Author     Description	
  ** --  ----------  ----------  -------------------------------
  ** 01   31/01/2019  ENS        Create funcitons
+ ** 02   21/03/2019  ENS        Include D365BC Service Folder
 ============================================================ #>
 
 Import-Module 'C:\..\Get-NavServicesBasicInfo\Get-NavServicesBasicInfo.ps1'
@@ -19,4 +20,4 @@ GetNavServicesBasicInfo
 
 
 # Get Dynamics NAV services basic information from other folder installation
-##GetNavServicesBasicInfo -DynamicsNAVDirectory "C:\ProgramData\Microsoft\Microsoft Dynamics NAV"
+##GetNavServicesBasicInfo -CustomNAVDirectory "E:\Program Files\Microsoft\Microsoft Dynamics NAV"
