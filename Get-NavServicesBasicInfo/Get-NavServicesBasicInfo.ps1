@@ -9,7 +9,7 @@
  ** PR  Date	     Author     Description	
  ** --  ----------  ----------  -------------------------------
  ** 01   31/01/2019  ENS        Create funcitons
- ** 02   21/03/2019  ENS        Include D365BC Service Folder
+ ** 02   21/03/2019  ENS        Include Classic D365BC Folder
 ============================================================ #>
 
 function GetNavServicesBasicInfo () {
@@ -24,6 +24,7 @@ function GetNavServicesBasicInfo () {
     $i = 10;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
+    $DynNAVClassicDirectory = "C:\Program Files (x86)\Microsoft Dynamics NAV";
     $DynamicsNAVDirectory = "C:\Program Files\Microsoft Dynamics NAV\";
     $Dynamics365BCDirectory = "C:\Program Files\Microsoft Dynamics 365 Business Central\";
 
@@ -64,6 +65,13 @@ function GetNavServicesBasicInfo () {
     $i = 40;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
     
+    foreach($file in Get-Childitem –Path $DynNAVClassicDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
+        Add-Content $NavServices $file.FullName
+    }
+    
+    $i = 45;
+    Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
+    
     foreach($file in Get-Childitem –Path $DynamicsNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
@@ -75,14 +83,14 @@ function GetNavServicesBasicInfo () {
         Add-Content $NavServices $file.FullName
     }
 
-    $i = 60;
+    $i = 55;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
     
     foreach($file in Get-Childitem –Path $CustomNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
 
-    $i = 70;
+    $i = 65;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
     If ((Get-Content $NavServices) -eq $Null) {
@@ -105,8 +113,8 @@ function GetNavServicesBasicInfo () {
         $row.DbInstance = ($xml.appSettings.add | Where {$_.Key -eq 'DatabaseInstance'}).value
         $row.DatabaseName = ($xml.appSettings.add | Where {$_.Key -eq 'DatabaseName'}).value
         $row.ManagementPort = ($xml.appSettings.add | Where {$_.Key -eq 'ManagementServicesPort'}).value
-        $row.ClientPort = ($xml.appSettings.add | Where {$_.Key -eq 'ClientServicesPort'}).value
-        $row.SOAPPort = ($xml.appSettings.add | Where {$_.Key -eq 'SOAPServicesPort'}).value
+        $row.ClientPort = ($xml.appSettings.add | Where {$_.Key -eq 'ClientServicesPort' -or $_.Key -eq  'ServerPort'}).value
+        $row.SOAPPort = ($xml.appSettings.add | Where {$_.Key -eq 'SOAPServicesPort' -or $_.Key -eq  'WebServicePort'}).value
         $row.ODataPort = ($xml.appSettings.add | Where {$_.Key -eq 'ODataServicesPort'}).value
 
         #Add the row to the table
