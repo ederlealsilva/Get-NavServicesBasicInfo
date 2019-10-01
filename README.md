@@ -63,4 +63,4 @@ See also the list of [contributors](https://github.com/ederlealsilva/Get-NavServ
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](https://github.com/ederlealsilva/Get-NavServicesBasicInfo/blob/master/LICENSE)**
-- Copyright 2018 © <a href="https://github.com/ederlealsilva/" target="_blank">Éder Leal da Silva</a>.
+- Copyright 2019 © <a href="https://github.com/ederlealsilva/" target="_blank">Éder Leal da Silva</a>.
