@@ -1,4 +1,4 @@
-﻿<# ============================================================
+<# ===============================================================
  -- Author:       Éder Leal da Silva
  -- Create Date:  31/01/2019
  -- Description:  Get All Dynamics NAV Service Basic Information
@@ -7,10 +7,10 @@
  ** Change History
  **************************
  ** PR  Date	     Author     Description	
- ** --  ----------  ----------  -------------------------------
+ ** --  ----------  ----------  ----------------------------------
  ** 01   31/01/2019  ENS        Create funcitons
- ** 02   21/03/2019  ENS        Include Classic D365BC Folder
-============================================================ #>
+ ** 02   21/03/2019  ENS        Include Classic and D365 BC Folder
+=============================================================== #>
 
 function GetNavServicesBasicInfo () {
     param(
@@ -45,6 +45,7 @@ function GetNavServicesBasicInfo () {
     $col6 = New-Object system.Data.DataColumn ClientPort,([string])
     $col7 = New-Object system.Data.DataColumn SOAPPort,([string])
     $col8 = New-Object system.Data.DataColumn ODataPort,([string])
+    $col9 = New-Object system.Data.DataColumn DeveloperPort,([string])
 
     #Add the Columns
     $table.columns.add($col1)
@@ -55,6 +56,7 @@ function GetNavServicesBasicInfo () {
     $table.columns.add($col6)
     $table.columns.add($col7)
     $table.columns.add($col8)
+    $table.columns.add($col9)
 
     $i = 30;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
@@ -116,6 +118,7 @@ function GetNavServicesBasicInfo () {
         $row.ClientPort = ($xml.appSettings.add | Where {$_.Key -eq 'ClientServicesPort' -or $_.Key -eq  'ServerPort'}).value
         $row.SOAPPort = ($xml.appSettings.add | Where {$_.Key -eq 'SOAPServicesPort' -or $_.Key -eq  'WebServicePort'}).value
         $row.ODataPort = ($xml.appSettings.add | Where {$_.Key -eq 'ODataServicesPort'}).value
+        $row.DeveloperPort = ($xml.appSettings.add | Where {$_.Key -eq 'DeveloperServicesPort'}).value
 
         #Add the row to the table
         $table.Rows.Add($row)
