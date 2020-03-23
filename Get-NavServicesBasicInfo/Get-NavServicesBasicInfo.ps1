@@ -1,5 +1,5 @@
 <# ===============================================================
- -- Author:       √âder Leal da Silva
+ -- Author:       …der Leal da Silva
  -- Create Date:  31/01/2019
  -- Description:  Get All Dynamics NAV Service Basic Information
 
@@ -10,6 +10,7 @@
  ** --  ----------  ----------  ----------------------------------
  ** 01   31/01/2019  ENS        Create funcitons
  ** 02   21/03/2019  ENS        Include Classic and D365 BC Folder
+ ** 03   23/03/2020  ENS        Include CredentialType property
 =============================================================== #>
 
 function GetNavServicesBasicInfo () {
@@ -17,35 +18,40 @@ function GetNavServicesBasicInfo () {
         [parameter(Mandatory=$false)]
         [string]$CustomNAVDirectory
     )
-    
+
     $progressActivity = "Search in Progress";
     $progressStatus = ""
 
+
     $i = 10;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
+
 
     $DynNAVClassicDirectory = "C:\Program Files (x86)\Microsoft Dynamics NAV";
     $DynamicsNAVDirectory = "C:\Program Files\Microsoft Dynamics NAV\";
     $Dynamics365BCDirectory = "C:\Program Files\Microsoft Dynamics 365 Business Central\";
 
     $tabName = "DynamicsNavServices"
+    
 
     $i = 20;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
+
     #Create Table object
-    $table = New-Object system.Data.DataTable ‚Äú$tabName‚Äù
+    $table = New-Object system.Data.DataTable ì$tabNameî
 
     #Define Columns
     $col1 = New-Object system.Data.DataColumn Service,([string])
     $col2 = New-Object system.Data.DataColumn DbServer,([string])
     $col3 = New-Object system.Data.DataColumn DbInstance,([string])
     $col4 = New-Object system.Data.DataColumn DatabaseName,([string])
-    $col5 = New-Object system.Data.DataColumn ManagementPort,([string])
-    $col6 = New-Object system.Data.DataColumn ClientPort,([string])
-    $col7 = New-Object system.Data.DataColumn SOAPPort,([string])
-    $col8 = New-Object system.Data.DataColumn ODataPort,([string])
-    $col9 = New-Object system.Data.DataColumn DeveloperPort,([string])
+    $col5 = New-Object system.Data.DataColumn CredentialType,([string])
+    $col6 = New-Object system.Data.DataColumn ManagementPort,([string])
+    $col7 = New-Object system.Data.DataColumn ClientPort,([string])
+    $col8 = New-Object system.Data.DataColumn SOAPPort,([string])
+    $col9 = New-Object system.Data.DataColumn ODataPort,([string])
+    $col10 = New-Object system.Data.DataColumn DeveloperPort,([string])
 
     #Add the Columns
     $table.columns.add($col1)
@@ -57,51 +63,67 @@ function GetNavServicesBasicInfo () {
     $table.columns.add($col7)
     $table.columns.add($col8)
     $table.columns.add($col9)
+    $table.columns.add($col10)
+
 
     $i = 30;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
+
     <# $NavServices = [System.IO.Path]::GetTempFileName() #>
     $NavServices = [System.IO.Path]::GetTempFileName()
 
+
     $i = 40;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
-    
-    foreach($file in Get-Childitem ‚ÄìPath $DynNAVClassicDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
+
+
+    foreach($file in Get-Childitem ñPath $DynNAVClassicDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
     
+
     $i = 45;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
     
-    foreach($file in Get-Childitem ‚ÄìPath $DynamicsNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
+
+    foreach($file in Get-Childitem ñPath $DynamicsNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
+
     
     $i = 50;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
-    foreach($file in Get-Childitem ‚ÄìPath $Dynamics365BCDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
+
+    foreach($file in Get-Childitem ñPath $Dynamics365BCDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
+
 
     $i = 55;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
     
-    foreach($file in Get-Childitem ‚ÄìPath $CustomNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
+
+    foreach($file in Get-Childitem ñPath $CustomNAVDirectory -File -Recurse -ErrorAction SilentlyContinue -Filter "CustomSettings.config") {
         Add-Content $NavServices $file.FullName
     }
 
+
     $i = 65;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
+
 
     If ((Get-Content $NavServices) -eq $Null) {
         Write-Host "Dynamics NAV services configuration file not found" -BackgroundColor Red
         return
     }
 
+
+
     $i = 75;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
+
 
     foreach($line in Get-Content $NavServices) {
         $xml = [xml](Get-Content $line)
@@ -114,6 +136,7 @@ function GetNavServicesBasicInfo () {
         $row.DbServer = ($xml.appSettings.add | Where {$_.Key -eq 'DatabaseServer'}).value
         $row.DbInstance = ($xml.appSettings.add | Where {$_.Key -eq 'DatabaseInstance'}).value
         $row.DatabaseName = ($xml.appSettings.add | Where {$_.Key -eq 'DatabaseName'}).value
+        $row.CredentialType = ($xml.appSettings.add | Where {$_.Key -eq 'ClientCredentialType' -or $_.Key -eq  'ClientServicesCredentialType'}).value
         $row.ManagementPort = ($xml.appSettings.add | Where {$_.Key -eq 'ManagementServicesPort'}).value
         $row.ClientPort = ($xml.appSettings.add | Where {$_.Key -eq 'ClientServicesPort' -or $_.Key -eq  'ServerPort'}).value
         $row.SOAPPort = ($xml.appSettings.add | Where {$_.Key -eq 'SOAPServicesPort' -or $_.Key -eq  'WebServicePort'}).value
@@ -123,16 +146,19 @@ function GetNavServicesBasicInfo () {
         #Add the row to the table
         $table.Rows.Add($row)
     }
+
+
     $i = 90;
     Show-ProgressBar -Activity $progressActivity -Status $progressStatus -Position $i
 
+
     #Display the table
     $table | format-table -AutoSize
+
     #$table | Out-GridView
-
     Remove-Item -Force $NavServices
-
 }
+
 
 function Show-ProgressBar{
     param (
@@ -145,4 +171,4 @@ function Show-ProgressBar{
     )
 
     Write-Progress -Activity $Activity -Status "$Position% Complete:" -PercentComplete $Position;
-} 
+}

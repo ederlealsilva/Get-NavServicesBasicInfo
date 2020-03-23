@@ -1,5 +1,5 @@
 # Get-NavServicesBasicInfo
-Get all Dynamics NAV service information in a server/computer.
+Get all Dynamics NAV service basic information in a server/computer.
 
 This script can be helpful if you want to know which ports are being use within Microsoft Dynamics NAV and Microsoft Dynamics 365 Business Central.
 
@@ -25,20 +25,20 @@ GetNavServicesBasicInfo
 
 Result Example:
 ```powershell
-Service        DbServer    DbInstance DatabaseName ManagementPort ClientPort SOAPPort ODataPort DeveloperPort
--------------- ----------- ---------- ------------ -------------- ---------- -------- --------- -------------
-DynamicsNAV    <Computer>             NAV2009                     7046       7047                
-DynamicsNAV100 <Computer>             NAVKDB2017   7100           7101       7102     7103       
-DynamicsNAV101 <Computer>  DBSRV2016  NAVAM2017    7105           7106       7107     7108       
-DynamicsNAV100 <Computer>  DBSRV2016  NAVPT2017QA  7100           7101       7102     7103       
-DynamicsNAV110 <Computer>  DBSRV2016  NAVAM2018    7110           7111       7112     7113       7114
-DynamicsNAV71  <Computer>  DBSRV2016  NAVPT2013QA  7070           7071       7072     7073       
-DynamicsNAV72  <Computer>  DBSRV2016  NAV-OBJECTS  7075           7076       7077     7078       
-DynamicsNAV80  <Computer>  DBSRV2016  NAVSECDEV    7080           7081       7082     7083        
-DynamicsNAV81  <Computer>  DBSRV2016  SCTFRMCU23   7085           7086       7087     7088       
-DynamicsNAV90  <Computer>             NAV2016CU30  7090           7091       7092     7093       
-DynamicsNAV901 <Computer>             DTSR         7094           7095       7096     7097       
-BC130          <Computer>  DBSRV2016  D365BC130    7300           7301       7302     7303       7304
+Service        DbServer    DbInstance DatabaseName             CredentialType ManagementPort ClientPort SOAPPort ODataPort DeveloperPort
+-------        --------    ---------- ------------             -------------- -------------- ---------- -------- --------- -------------
+DynamicsNAV    ARQUI01-ENS DBSRV2016  Demo Database NAV (6-0)  Windows                       7046       7047                            
+DynamicsNAV100 ARQUI01-ENS DBSRV2016  Demo Database NAV (10-0) Windows        7145           7146       7147     7148                   
+DynamicsNAV110 ARQUI01-ENS DBSRV2016  Demo Database NAV (11-0) Windows        7245           7246       7247     7248      7249         
+DynamicsNAV70  ARQUI01-ENS DBSRV2016  Demo Database NAV (7-0)  Windows        7045           7070       7071     7072                   
+DynamicsNAV71  ARQUI01-ENS DBSRV2016  Demo Database NAV (7-1)  Windows        7075           7076       7077     7078                   
+DynamicsNAV80  ARQUI01-ENS DBSRV2016  Demo Database NAV (8-0)  Windows        7085           7086       7087     7088                   
+DynamicsNAV90  ARQUI01-ENS DBSRV2016  Demo Database NAV (9-0)  Windows        7095           7096       7097     7098                   
+BC130          ARQUI01-ENS DBSRV2016  Demo Database NAV (13-0) Windows        7345           7346       7347     7348      7349         
+BC140          ARQUI01-ENS DBSRV2016  Demo Database BC (14-0)  Windows        7445           7446       7447     7448      7449         
+BC150          ARQUI01-ENS DBSRV2016  Demo Database BC (15-0)  Windows        7545           7546       7547     7548      7549         
+
+
 
 ```
 
